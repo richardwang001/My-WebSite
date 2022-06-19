@@ -40,29 +40,43 @@ const uniqueArrBy=<T,K extends keyof T>(arr:T[], uniId:K)=>{
   },[] as T[])
 }
 ```
-## 4. Two Or More Object Array At The Same Time
+## 4. Two Object Array Based On Key
 1. use forEach and every
 ```typescript
 export const removeElementIfKeyValueInSecondArray = <U, T> (
-  ObjectArray1: Array<U>,
-  ObjectArray2: Array<T>,
+  objectArray1: Array<U>,
+  objectArray2: Array<T>,
   comparableKeyOfArray1: keyof U,
-  comparableKeyOfArray2: keyof T): Array<U> =>
-{
+  comparableKeyOfArray2: keyof T
+): Array<U> => {
   let newArr: Array<U> = [];
-  ObjectArray1.forEach((item: U) => {
-    const checked: boolean = ObjectArray2.every((member: T) => {
-      const value1 = item[comparableKeyOfArray1] as any;
-      const value2 = member[comparableKeyOfArray2] as any;
-      if (typeof value1 === typeof value2) {
-        return value1 !== value2;
-      } else {
-        return false;
-      }
-    });
-    checked && newArr.push(item);
-  });
+  objectArray1.forEach((item: U) =>
+    objectArray2.every((member: T) =>
+      item[comparableKeyOfArray1] === member[comparableKeyOfArray2] as any) && newArr.push(item));
   return newArr;
-}; 
+};
 ```
-## 5. 
+2. use filter and map
+```typescript
+export const filterKeyValueNotInObjectArr = <U, T> (
+  objectArray1: U[],
+  objectArray2: T[],
+  keyOfArray1: keyof U,
+  keyOfArray2: keyof T
+): U[] => (
+  objectArray1.filter((item: U) =>
+    !(objectArray2.map(member => member[keyOfArray2]).includes(item[keyOfArray1] as any)))
+);
+```
+## 5. One Object Array And A String[]|Number[]
+
+```typescript
+export const filterKeyValueNotInArr = <U> (
+  objectArray: U[],
+  strOrNumArray: number[]|string[],
+  keyOfArray: keyof U,
+): U[] => (
+  objectArray.filter((item: U) =>
+    !(strOrNumArray.includes(item[keyOfArray] as never)))
+);
+```
