@@ -28,10 +28,10 @@ export const removeElementIfKeyValueInSecondArray = <U, T> (
   comparableKeyOfArray1: keyof U,
   comparableKeyOfArray2: keyof T
 ): Array<U> => {
-  let newArr: Array<U> = [];
-  objectArray1.forEach((item: U) =>
-    objectArray2.every((member: T) =>
-      item[comparableKeyOfArray1] === member[comparableKeyOfArray2] as any) && newArr.push(item));
+  let newArr: Array<U> = [...objectArray1];
+  newArr.forEach((item: U, index) =>
+    objectArray2.some((member: T) =>
+      item[comparableKeyOfArray1] === member[comparableKeyOfArray2] as any) && newArr.splice(index, 1));
   return newArr;
 };
 
@@ -42,12 +42,12 @@ export const filterKeyValueNotInObjectArr = <U, T> (
   keyOfArray2: keyof T
 ): U[] => (
   objectArray1.filter((item: U) =>
-    !(objectArray2.map(member => member[keyOfArray2]).includes(item[keyOfArray1] as any)))
+    !objectArray2.some((member: T) => member[keyOfArray2] === item[keyOfArray1] as any))
 );
 
 export const filterKeyValueNotInArr = <U> (
   objectArray: U[],
-  strOrNumArray: number[]|string[],
+  strOrNumArray: number[] | string[],
   keyOfArray: keyof U,
 ): U[] => (
   objectArray.filter((item: U) =>

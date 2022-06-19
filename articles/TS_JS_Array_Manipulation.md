@@ -41,7 +41,7 @@ const uniqueArrBy=<T,K extends keyof T>(arr:T[], uniId:K)=>{
 }
 ```
 ## 4. Two Object Array Based On Key
-1. use forEach and every
+1. use forEach and some
 ```typescript
 export const removeElementIfKeyValueInSecondArray = <U, T> (
   objectArray1: Array<U>,
@@ -49,14 +49,14 @@ export const removeElementIfKeyValueInSecondArray = <U, T> (
   comparableKeyOfArray1: keyof U,
   comparableKeyOfArray2: keyof T
 ): Array<U> => {
-  let newArr: Array<U> = [];
-  objectArray1.forEach((item: U) =>
-    objectArray2.every((member: T) =>
-      item[comparableKeyOfArray1] === member[comparableKeyOfArray2] as any) && newArr.push(item));
+  let newArr: Array<U> = [...objectArray1];
+  newArr.forEach((item: U,index) =>
+    objectArray2.some((member: T) =>
+      item[comparableKeyOfArray1] === member[comparableKeyOfArray2] as any) && newArr.splice(index,1));
   return newArr;
 };
 ```
-2. use filter and map
+2. use filter and some
 ```typescript
 export const filterKeyValueNotInObjectArr = <U, T> (
   objectArray1: U[],
