@@ -1,4 +1,4 @@
-export const makeArrayUnique = <T, K extends keyof T> (arr: T[], uniId: K): T[] => {
+export const uniqueByKey = <T, K extends keyof T> (arr: T[], uniId: K): T[] => {
   const res = new Map();
   return arr.filter((item) => !res.has(item[uniId]) && res.set(item[uniId], 1));
 };
